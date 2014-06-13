@@ -13,3 +13,4 @@ Example
 ===
 
     var moon = new Orbit(Earth, moon, 100, 1);
+    moon.bigBang();
