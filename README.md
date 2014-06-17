@@ -11,5 +11,5 @@ Begin with bigBang();
 
 ###Example
 
-    var moon = new Orbit(Earth, moon, 100, 1);
+    var moon = new Orbit(earth, moon, 100, 1);
     moon.bigBang();
