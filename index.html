@@ -97,7 +97,13 @@ var Orbit = (function(planet, moon, distance, speed) {
 			var leftPos = Math.round(xPos + self.planetPos.x + self.planetPos.center - (self.moon.offsetHeight/2)),
 				topPos = Math.round(yPos + self.planetPos.y + self.planetPos.center - (self.moon.offsetHeight/2))
 
-			self.moon.style.webkitTransform = "translate(" + leftPos + "px, " + topPos + "px)";
+			self.planet.dataset.left = leftPos;
+			self.planet.dataset.top = topPos;
+
+			/*self.moon.style.MozTransform = "translate(" + leftPos + "px, " + topPos + "px)";
+			self.moon.style.webkitTransform = "translate(" + leftPos + "px, " + topPos + "px)";*/
+			self.moon.style.left = leftPos + "px";
+			self.moon.style.top = topPos + "px";
 
 			self.refAngle = self.refAngle + self.speed;
 
@@ -112,13 +118,13 @@ var planet = document.getElementById('planet');
 var sun = document.getElementById('sun');
 
 var moonOrbit = new Orbit(planet, moon, 35, 3);
-var planetOrbit = new Orbit(sun, planet, 150, 5);
+var planetOrbit = new Orbit(sun, planet, 300, 1);
 
 var button = document.getElementById('button');
 button.addEventListener('click', start);
 
 function start() {
-	//moonOrbit.bigBang();
+	moonOrbit.bigBang();
 	planetOrbit.bigBang();
 
 	button.removeEventListener('click', start);
