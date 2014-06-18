@@ -1,134 +1,82 @@
 <!doctype html>
 <html>
 <head>
-	<title></title>
+	<title>Orbit JS Demonstration</title>
 
-	<style>
-
-	body {
-		background: #111;
-		height: 100%;
-		width: 100%;
-	}
-
-	#button {
-		position: fixed;
-		top: 20px;
-		left: 20px;
-		z-index: 2;
-	}
-
-	#moon {
-		position: absolute;
-		background: #DDD;
-		height: 10px;
-		width: 10px;
-		border-radius: 50%;
-	}
-
-	#planet {
-		position: absolute;
-		width: 25px;
-		height: 25px;
-		background: #08C;
-		border-radius: 50%;
-		box-shadow: 0 0 10px 2px rgb(100,100,255);
-	}
-
-	#sun {
-		position: absolute;
-		width: 100px;
-		height: 100px;
-		background: yellow;
-		border-radius: 50%;
-		left: 400px;
-		top: 400px;
-		box-shadow: 0 0 30px 10px rgb(255,255,0);
-	}
-
-	</style>
+	<link rel="stylesheet" href="style/screen.css" type="text/css" />
 </head>
 <body>
 
-<div id="solar_system">
+<div id="space">
 
-	<div id="moon"></div>
-	<div id="path"></div>
-	<div id="planet"></div>
-
-	<div id="sun"></div>
+	<div id="moon" class="space_el"></div>
+	<div id="earth" class="space_el"></div>
+	<div id="sun" class="space_el"></div>
 
 </div>
 
-<button id="button">start</button>
+<div class="btn_bar">
+	<button id="buttonStart">start</button>
+	<button id="buttonPause">pause</button>
+	<button id="buttonStep">step</button>
+</div>
 
+<script src="src/orbit.js"></script>
 <script>
-var Orbit = (function(planet, moon, distance, speed) {
-	'use strict';
 
-	var self = this;
+	(function() {
+		'use strict';
 
-	//this.moon = moon;
-	this.planet = planet;
-	this.moon = moon;
-	this.distance = distance;
-	this.refAngle = 0;
+		var moon = document.getElementById('moon');
+		var planet = document.getElementById('earth');
+		var sun = document.getElementById('sun');
 
-	this.speed = speed;
+		var moonConfig = {
+			distance: 35,
+			speed: 3,
+			startAngle: 50
+		};
 
-	this.bigBang = function() {
+		var planetConfig = {
+			distance: 200,
+			speed: 1
+		};
 
+		var moonOrbit = new Orbit(planet, moon, moonConfig);
+		var planetOrbit = new Orbit(sun, planet, planetConfig);
 
-		setInterval(function() {
+		(function addPlayControls() {
 
-			if(self.refAngle >= 360) {
-				self.refAngle = 0;
+			var startBtn = document.getElementById('buttonStart');
+			var pauseBtn = document.getElementById('buttonPause');
+			var stepBtn = document.getElementById('buttonStep');
+
+			startBtn.addEventListener('click', start);
+			pauseBtn.addEventListener('click', pause);
+			stepBtn.addEventListener('click', step);
+
+			function start() {
+				moonOrbit.bigBang();
+				planetOrbit.bigBang();
+
+				this.removeEventListener('click', start);
+				this.remove();
 			}
 
-			self.planetPos = {
-				x: self.planet.offsetLeft,
-				y: self.planet.offsetTop,
-				center: (self.planet.offsetHeight/2)
-			};
+			function pause() {
+				moonOrbit.pause();
+				planetOrbit.pause();
+			}
 
-			var xPos = (Math.round(Math.sin(self.refAngle * (Math.PI/180)) * self.distance));
-			var yPos = (Math.round((Math.cos(self.refAngle * (Math.PI/180)) * self.distance)));
+			function step() {
+				moonOrbit.step();
+				planetOrbit.step();
+			}
 
-			var leftPos = Math.round(xPos + self.planetPos.x + self.planetPos.center - (self.moon.offsetHeight/2)),
-				topPos = Math.round(yPos + self.planetPos.y + self.planetPos.center - (self.moon.offsetHeight/2))
+		})();
 
-			self.planet.dataset.left = leftPos;
-			self.planet.dataset.top = topPos;
-
-			/*self.moon.style.MozTransform = "translate(" + leftPos + "px, " + topPos + "px)";
-			self.moon.style.webkitTransform = "translate(" + leftPos + "px, " + topPos + "px)";*/
-			self.moon.style.left = leftPos + "px";
-			self.moon.style.top = topPos + "px";
-
-			self.refAngle = self.refAngle + self.speed;
-
-		}, 24);
-
-	};
-
-});
-
-var moon = document.getElementById('moon');
-var planet = document.getElementById('planet');
-var sun = document.getElementById('sun');
-
-var moonOrbit = new Orbit(planet, moon, 35, 3);
-var planetOrbit = new Orbit(sun, planet, 300, 1);
-
-var button = document.getElementById('button');
-button.addEventListener('click', start);
-
-function start() {
-	moonOrbit.bigBang();
-	planetOrbit.bigBang();
-
-	button.removeEventListener('click', start);
-}
+		
+	})();
 
 </script>
 </body>

@@ -1,0 +1,22 @@
+{
+  "name": "orbit",
+  "version": "0.0.4",
+  "description": "Create orbiting patterns",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/captainCoolMJ/Orbit-JS.git"
+  },
+  "author": "Matt Jennings",
+  "license": "DWTFYW",
+  "bugs": {
+    "url": "https://github.com/captainCoolMJ/Orbit-JS/issues"
+  },
+  "homepage": "https://github.com/captainCoolMJ/Orbit-JS",
+  "devDependencies": {
+    "grunt-contrib-uglify": "^0.5.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-jshint": "^0.10.0"
+  }
+}
