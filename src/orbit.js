@@ -26,9 +26,9 @@
 var Orbit = (function(planet, moon, options) {
 	'use strict';
 
-	var self = this,
-		animationInterval,
-		defaultAngle = options.startAngle || 0;
+	var defaultAngle = options.startAngle || 0;
+
+	this.animationInterval = undefined;
 
 	// set elements
 	this.planet = {
@@ -49,59 +49,53 @@ var Orbit = (function(planet, moon, options) {
 	this.refAngle = defaultAngle;
 
 	// Calculate the next position of the planets
-	var calculatePosition = function() {
+	this.calculatePosition = function() {
 
 		// Make sure the count resets after a full cycle
-		self.refAngle = self.refAngle <= defaultAngle + 360 ? self.refAngle : defaultAngle;
+		this.refAngle = this.refAngle <= defaultAngle + 360 ? this.refAngle : defaultAngle;
 
 		// Convert to radians and calculate x and y values
-		var refRadians = self.refAngle * (Math.PI/180);
-		var xPos = Math.round(Math.sin(refRadians) * self.distance);
-		var yPos = Math.round(Math.cos(refRadians) * self.distance);
+		var refRadians = this.refAngle * (Math.PI/180);
+		var xPos = Math.round(Math.sin(refRadians) * this.distance);
+		var yPos = Math.round(Math.cos(refRadians) * this.distance);
 
 		// Update x and y based on new offsets
-		self.planet.x = self.planet.el.offsetLeft;
-		self.planet.y = self.planet.el.offsetTop;
+		this.planet.x = this.planet.el.offsetLeft;
+		this.planet.y = this.planet.el.offsetTop;
 
 		// Put it all together
-		var leftPos = Math.round(xPos + self.planet.x + self.planet.center - self.moon.center),
-			topPos = Math.round(yPos + self.planet.y + self.planet.center - self.moon.center);
+		var leftPos = Math.round(xPos + this.planet.x + this.planet.center - this.moon.center),
+			topPos = Math.round(yPos + this.planet.y + this.planet.center - this.moon.center);
 
 		// Update DOM element with new value
-		self.moon.el.style.left = leftPos + "px";
-		self.moon.el.style.top = topPos + "px";
+		this.moon.el.style.left = leftPos + "px";
+		this.moon.el.style.top = topPos + "px";
 		
 		// Increment the angle based on speed
-		self.refAngle = self.refAngle + self.speed;
+		this.refAngle = this.refAngle + this.speed;
 
-	};
-
-	// Sets a cycle animation with a 24fps frame rate
-	this.bigBang = function() {
-
-		animationInterval = setInterval(calculatePosition, 24);
-
-	};
-
-	// Moves one calculation at a time
-	this.step = function() {
-
-		clearInterval(animationInterval);
-		calculatePosition();
-
-	};
-
-	// Pauses the animation at the current position
-	this.pause = function() {
-
-		clearInterval(animationInterval);
-
-	};
-
-	return {
-		bigBang : this.bigBang,
-		step : this.step,
-		pause : this.pause,
 	};
 
 });
+
+// Sets a cycle animation with a 24fps frame rate
+Orbit.prototype.bigBang = function() {
+
+	this.animationInterval = setInterval(this.calculatePosition.bind(this), 24);
+	
+};
+
+// Moves one calculation at a time
+Orbit.prototype.step = function() {
+
+	clearInterval(this.animationInterval);
+	this.calculatePosition();
+
+};
+
+// Pauses the animation at the current position
+Orbit.prototype.pause = function() {
+
+	clearInterval(this.animationInterval);
+
+};
