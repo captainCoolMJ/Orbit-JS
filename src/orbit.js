@@ -1,22 +1,20 @@
 /**********************************************************************
 *
-* ORBIT.JS - v0.3
+* ORBIT.JS - v0.4
 *
 *======================================================================
 *
-*            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-*                    Version 2, December 2004
+* MIT License (MIT)
 *
-* Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+* Copyright (c) 2014 Matt Jennings
 *
-* Everyone is permitted to copy and distribute verbatim or modified
-* copies of this license document, and changing it is allowed as long
-* as the name is changed.
-*
-*            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-*   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-*
-* 0. You just DO WHAT THE FUCK YOU WANT TO.
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
 *
 *=======================================================================
 *
@@ -26,7 +24,7 @@
 var Orbit = (function(planet, moon, options) {
 	'use strict';
 
-	var defaultAngle = options.startAngle || 0;
+	this.defaultAngle = options.startAngle || 0;
 
 	this.animationInterval = undefined;
 
@@ -46,13 +44,13 @@ var Orbit = (function(planet, moon, options) {
 	// set default options
 	this.distance = options.distance || 10;
 	this.speed = options.speed || 1;
-	this.refAngle = defaultAngle;
+	this.refAngle = this.defaultAngle;
 
 	// Calculate the next position of the planets
 	this.calculatePosition = function() {
 
 		// Make sure the count resets after a full cycle
-		this.refAngle = this.refAngle <= defaultAngle + 360 ? this.refAngle : defaultAngle;
+		this.refAngle = this.refAngle <= this.defaultAngle + 360 ? this.refAngle : this.defaultAngle;
 
 		// Convert to radians and calculate x and y values
 		var refRadians = this.refAngle * (Math.PI/180);
